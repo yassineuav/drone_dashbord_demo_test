@@ -1,15 +1,15 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
+import { transactions } from "../../datatablesource";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
-const Datatable = () => {
-  const [data, setData] = useState(userRows);
+const Datatable = ({ transactionData , setModal}) => {
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
+  // const handleDelete = (id) => {
+  //    setData(data.filter((item) => item.id !== id));
+  // };
+
+  // console.log("data transactions : ", transactionData);
 
   const actionColumn = [
     {
@@ -19,12 +19,12 @@ const Datatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+            <Link to="/transaction/edit/:id" style={{ textDecoration: "none" }}>
+              <div className="viewButton">Edit</div>
             </Link>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => setModal({isOpen:true, type:"delete", id:params.row.id})}
             >
               Delete
             </div>
@@ -35,16 +35,16 @@ const Datatable = () => {
   ];
   return (
     <div className="datatable">
-      <div className="datatableTitle">
-        Add New User
+      {/* <div className="datatableTitle">
+        List of Transactions
         <Link to="/users/new" className="link">
-          Add New
+          Add Transaction
         </Link>
-      </div>
+      </div> */}
       <DataGrid
         className="datagrid"
-        rows={data}
-        columns={userColumns.concat(actionColumn)}
+        rows={transactionData}
+        columns={transactions.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

@@ -4,6 +4,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
+import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -39,10 +40,22 @@ const Sidebar = () => {
               <span>Users</span>
             </li>
           </Link>
-          <Link to="/products" style={{ textDecoration: "none" }}>
+          <Link to="/drones" style={{ textDecoration: "none" }}>
+            <li>
+              <SettingsInputAntennaIcon className="icon" />
+              <span>Drones</span>
+            </li>
+          </Link>
+          <Link to="/drone_controller" style={{ textDecoration: "none" }}>
+            <li>
+              <SettingsInputAntennaIcon className="icon" />
+              <span>Drone Controller</span>
+            </li>
+          </Link>
+          <Link to="/geodrone" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
-              <span>Products</span>
+              <span>Geo Drone Map</span>
             </li>
           </Link>
           <li>

@@ -1,16 +1,16 @@
 .app.dark {
-  background-color: #111;
-  color: rgb(156, 156, 156);
+  background-color: rgb(20, 20, 45);
+  color: rgb(118, 114, 114);
 
   .chartGrid {
     stroke: rgba(228, 228, 228, 0.219);
   }
 
   .table {
-    background-color: #111;
+    background-color: #163445;
 
     .tableCell {
-      color: gray;
+      color: rgb(106, 101, 101);
     }
   }
 
@@ -32,6 +32,7 @@
         color: #999;
       }
     }
+
     hr {
       border-color: #333;
     }
@@ -41,7 +42,6 @@
         &:hover {
           background-color: #333;
         }
-
         .icon {
           color: #999;
         }
@@ -57,7 +57,7 @@
       .viewButton,
       .deleteButton,
       .cellWithStatus {
-        color: gray;
+        color: rgb(225, 99, 99);
         border: none;
       }
     }

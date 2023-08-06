@@ -75,3 +75,24 @@ export const userInputs = [
     },
   ];
   
+
+  export const expences = [
+    {
+      id: "amount",
+      label: "Amount",
+      type: "number",
+      placeholder: "Enter Amount",
+    },
+    {
+      id: "type",
+      label: "Deposit | Withdraw",
+      type: "text",
+      placeholder: "Deposit",
+    },
+    {
+      id: "from",
+      label: "income from",
+      type: "text",
+      placeholder: "full-time Tesla",
+    },
+  ];
