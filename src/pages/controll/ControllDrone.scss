@@ -49,18 +49,51 @@
           margin-right: 20px;
           position: relative;
 
-          .statusButton {
+          .status{
+            font-size: 20px;
+
+          }
+
+          .statusButtonRun {
             background-color: #1da618;
             color: white;
             border: none;
             padding: 1px;
-            font-size: 20px;
+            font-size: 22px;
             height: 35px;
             width: 135px;
+            padding-left: 10px;
+            text-align: left;
             box-shadow: 0 2px 4px darkslategray;
-
-
+            .icon {
+              // background: url(assets/blink_green.gif) no-repeat;
+              float: right;
+              margin-left: -20px;
+              width: 35px;
+              height: 35px;
+            }
           }
+          .statusButtonClose {
+            background-color: #e33710;
+            color: white;
+            border: none;
+            padding: 1px;
+            font-size: 22px;
+            height: 35px;
+            width: 135px;
+            padding-left: 10px;
+            text-align: left;
+            box-shadow: 0 2px 4px darkslategray;
+            .icon {
+              // background: url(assets/blink_green.gif) no-repeat;
+              background-color:red;
+              float: right;
+              margin-left: -20px;
+              width: 35px;
+              height: 35px;
+            }
+          }
+
         }
       }
     }

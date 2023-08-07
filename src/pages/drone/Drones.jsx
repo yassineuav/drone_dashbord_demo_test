@@ -23,7 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-let socket = new WebSocket("ws://localhost:8000/ws/test/");
+let socket = new WebSocket("ws://localhost:8000/ws/drone/");
 
 
 // const baseURL = "http://localhost:8000/dronetest/";
@@ -67,13 +67,13 @@ export const Drones = () => {
 
   const handleOnClick = (droneStatus)  =>  {
   
-    if (droneStatus.status === 1 || droneStatus.status === "ON"){
-      droneStatus.status = 0;
+    if (droneStatus.status === "ON"){
+      droneStatus.status = "OFF";
     }else{
-      droneStatus.status = 1;
+      droneStatus.status = "ON";
     }
     console.log(droneStatus)
-    axios.put(`http://localhost:8000/dronetest/${droneStatus.id}/`, droneStatus)
+    axios.put(`http://localhost:8000/drone/${droneStatus.id}/`, droneStatus)
     .then((response) => {
       console.log(response)
     });
@@ -114,7 +114,7 @@ export const Drones = () => {
                     <Item>
                       <Typography variant="h6">{item.name}</Typography>
                       <Droneicon
-                        fill={item.status === 1 || item.status === "ON"
+                        fill={ item.status === "ON"
                             ? "green" : "red"}
                         strock="green"
                         width="150px"
@@ -129,13 +129,11 @@ export const Drones = () => {
                               size="small"
                               variant="contained"
                               onClick={()=>{handleOnClick(item)}}
-                              color={item.status === 1 || item.status === "ON"
+                              color={item.status === "ON"
                                 ? "success"
                                 : "error"}
                               >
-                              Status: {item.status === 1 || item.status === "ON"
-                                ? "ON"
-                                : "OFF"}
+                              Status: {item.status}
                             </Button>
                           </Item>
                           <Item>
