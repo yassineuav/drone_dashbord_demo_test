@@ -4,26 +4,24 @@ import { CircularProgress } from "@mui/material";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import runing_gif from "../../assets/blink_green.gif";
-import off_gif from "../../assets/blink_red.gif"
+import off_gif from "../../assets/blink_red.gif";
+import { timeAgo } from "../../components/utils/TimeAgo";
 
-
+let socket = new WebSocket("ws://localhost:8000/ws/order/");
 
 export const ControllDrone = () => {
   const [loading, setLoading] = useState(true);
   const [serverStatus, setServerStatus] = useState(false);
+  const [data, setData] = useState([]);
 
-  // const baseURL = "http://localhost:8000/dronetest/";
+  function connect() {
+    console.log("my data ", data);
+  }
 
-  const [data, setData] = useState({});
+  socket.onopen = function (e) {
+    setLoading(false);
+    setServerStatus(true);
 
-function connect()  {
-    
-  let socket = new WebSocket("ws://localhost:8000/ws/order/");
-
-    socket.onopen = function (e) {
-      setLoading(false);
-      setServerStatus(true)
-    
     console.log("ws send: ");
     socket.send(
       JSON.stringify({
@@ -34,96 +32,77 @@ function connect()  {
     );
   };
 
-  socket.onclose = function(e){
-    setServerStatus(false)
-  }
+  socket.onclose = function (e) {
+    setServerStatus(false);
+  };
 
-  socket.onerror = function(e){
+  socket.onerror = function (e) {
     console.log("websocket error:", e);
     // socket.close();
-  }
+  };
 
   socket.onmessage = function (e) {
-    setLoading(false);
-    setServerStatus(true)
+    // setLoading(false);
+    // setServerStatus(true)
+
     let allData = JSON.parse(e.data);
-    console.log("on message data: ", allData);
+
+    console.log("on message all data: ", allData);
+
     if (allData.action === "list") {
       setData(allData.data);
     } else if (allData.action === "create") {
       setData((data) => [...data, allData.data]);
     } else if (allData.action === "update") {
+      // setData(prevData => ([...prevData, ...allData.data]));
       let newData = data.map((item) => {
         if (item.id === allData.data.id) {
           item = allData.data;
         }
-         return item;
+        return item;
       });
 
       setData(newData);
-
-      // console.log("update data: ", newData);
     }
   };
   // if(socket.readyState === 1){}
-  
-  
-}
 
-
-
-
-  const timeAgo = (date) => {
-    const seconds = Math.floor((new Date() - date) / 1000);
-
-    let interval = Math.floor(seconds / 31536000);
-    if (interval > 1) {
-      return interval + " years ago";
-    }
-
-    interval = Math.floor(seconds / 2592000);
-    if (interval > 1) {
-      return interval + " months ago";
-    }
-
-    interval = Math.floor(seconds / 86400);
-    if (interval > 1) {
-      return interval + " days ago";
-    }
-
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) {
-      return interval + " hours ago";
-    }
-
-    interval = Math.floor(seconds / 60);
-    if (interval > 1) {
-      return interval + " minutes ago";
-    }
-
-    if (seconds < 10) return "just now";
-
-    return Math.floor(seconds) + " seconds ago";
-  };
+  // }
 
   useEffect(() => {
-    if(loading){
-      setTimeout(function() {
-        setLoading(false);  
-      }, 2000);        
+    if (loading) {
+      setTimeout(function () {
+        setLoading(false);
+      }, 2000);
     }
-    if(!serverStatus){
-      console.log('Socket is closed. Reconnect will be attempted in 5 second.');
-      // setTimeout(function() {
-      //   connect();  
-      // }, 5000);        
-    }else{
-      console.log('Socket is open');      
-    }
-    // connect();
-  
+    // const socket = new WebSocket('ws://localhost:8000/ws/order/');
 
+    // Listen for messages from the WebSocket server
+    // socket.addEventListener("message", (event) => {
+    //   const updatedData = JSON.parse(event.data);
+      
+    //   console.log("add event listerner:  updated data", updatedData)
+    //   console.log("add event listerner:  old data", data)
+    //   let newData = data.map((item) => {
+    //     console.log("data new data ", item);
+    //     if (item.id === updatedData.data.id) {
+    //       item = updatedData.data;
+    //     }
+    //     console.log("item ", item)
+    //     return item;
+    //   });
+
+      //   console.log("add event listerner: after new data", newData)
+      // setData(newData);
+      //setData(updatedData); // Update the state with the new data
+    // });
+
+    // // Clean up the WebSocket connection when the component unmounts
+    // return () => {
+    //   // socket.close();
+    // };
   }, []);
+
   return (
     <div className="list">
       <Sidebar />
@@ -146,37 +125,56 @@ function connect()  {
                     <p className="status">Status:</p>
                   </div>
                   <div className="item">
-                    { serverStatus ? <button
-                      className="statusButtonRun"
-                      type="button"
-                      onClick={() => {}}
-                    >running
-                      <img src={runing_gif} alt="blink" className="icon" />
-                    </button> :
-                    <button
-                      className="statusButtonClose"
-                      type="button"
-                      onClick={() => {connect()}}
-                    >off
-                      <img src={off_gif} alt="blink" className="icon" />
-                    </button>}
-
+                    {serverStatus ? (
+                      <button
+                        className="statusButtonRun"
+                        type="button"
+                        onClick={() => {}}
+                      >
+                        running
+                        <img src={runing_gif} alt="blink" className="icon" />
+                      </button>
+                    ) : (
+                      <button
+                        className="statusButtonClose"
+                        type="button"
+                        onClick={() => {
+                          connect();
+                        }}
+                      >
+                        off
+                        <img src={off_gif} alt="blink" className="icon" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
             {/*  fetch async commad and status info from server */}
             <div className="json_data">
-              <h4>{JSON.stringify(data)}</h4>
               {data.length &&
                 data?.map((item, index) => (
                   <div key={index}>
-                    <h2>
-                      Order ID: {item.id} |Weight: {item.weight} | Status: {item.status.status} | last update:
-                      {timeAgo(new Date(item.updated_at))}
-                    </h2>
+                    <h3>
+                      Order ID: {item.id} | Weight: {item.weight} | Description
+                      : {item.description} | Status: {item.status} | Status id : {item.status_id} | order last
+                      update:
+                      {timeAgo(item.updated_at)} 
+                    </h3>
+                    <div>
+                      status histories:
+                      {item.status_history.length &&
+                        item?.status_history.map((status) => (
+                          <h4 key={status.id} className="status_color">
+                            {status.id} - {status.status} - last update {timeAgo(status.updated_at)}
+                          </h4>
+                        ))}
+                    </div>
                   </div>
                 ))}
+              <br />
+              <p>{JSON.stringify(data)}</p>
+              {/* {console.log("on message data>>: ", data)} */}
             </div>
           </div>
         )}
