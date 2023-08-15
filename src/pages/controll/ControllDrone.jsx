@@ -164,9 +164,9 @@ export const ControllDrone = () => {
                     <div>
                       status histories:
                       {item.status_history.length &&
-                        item?.status_history.map((status) => (
+                        item?.status_history.map((status, index) => (
                           <h4 key={status.id} className="status_color">
-                            {status.id} - {status.status} - last update {timeAgo(status.updated_at)}
+                            {index+1} - {status.status} - last update {timeAgo(status.updated_at)}
                           </h4>
                         ))}
                     </div>
